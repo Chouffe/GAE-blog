@@ -1,11 +1,39 @@
-{% extends "generic.html" %}
-{% block title %}
-About
-{% endblock %}
-{% block content %}
-<div class="hero-unit">
-    About
+<div class="well">
+    <a class="close" data-dismiss="alert">×</a>
+    <div class="container-fluid">
+        <div class="row-fluid">
+            <div class="span2">
+                <img src="{{STATIC_URL}}img/avatar.jpeg" class="img-rounded"
+            style="box-shadow:3px 3px 3px 3px #eee; border: 1px solid #ccc;"/>
+            </div>
+            <div class="span3">
+                <h4>Arthur Caillau</h4>
+                <ul>
+                    <li>Master in Machine Learning (KTH, Stockholm)</li>
+                    <li>Master in General Engineering (ECL, Lyon)</li>
+                </ul>
+            </div>
+            <div class="span3">
+                <h4>Interests</h4>
+                <ul>
+                    <li>Machine Learning</li>
+                    <li>Data Mining</li>
+                    <li>Big Data</li>
+                    <li>Artificial Intelligence</li>
+                    <li>Computer Vision</li>
+                </ul>
+            </div>
+            <div class="span3">
+                <h4>Computer skills</h4>
+                <ul>
+                    <li>Algorithmic</li>
+                    <li>Data Structures</li>
+                    <li>Python</li>
+                    <li>Linux</li>
+                    <li>Java</li>
+                    <li>SQL / noSQL</li>
+                </ul>
+            </div>
+        </div>
+    </div>
 </div>
-{% endblock %}
-
-

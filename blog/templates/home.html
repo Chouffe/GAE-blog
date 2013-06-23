@@ -1,6 +1,10 @@
 {% extends "generic.html" %}
 {% block content %}
-<div class="hero-unit">
+<div class="well well-large">
+    {% for article in articles %}
+    {{ article.title }}
+    {{ article.content }}
+    {% endfor %}
     Home
 </div>
 {% endblock %}
