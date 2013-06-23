@@ -1,0 +1,13 @@
+{% extends "generic.html" %}
+{% block title %}
+Login
+{% endblock %}
+{% block content %}
+<div class="hero-unit">
+    {% for u in users %}
+    {{ u.username }} - {{ u.password }}<br />
+    {% endfor %}
+    Login
+</div>
+{% endblock %}
+

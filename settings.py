@@ -163,6 +163,7 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'core',
+    'blog',
     'appengine_sessions',
     # Uncomment the next line to enable the admin:
     # 'django.contrib.admin',
