@@ -1,27 +1,16 @@
-from django.core.urlresolvers import reverse
 from django.contrib import messages
 from django.shortcuts import redirect
-from django.contrib.auth import authenticate, login
 from django.shortcuts import render
-from google.appengine.api import users
-from django.views.generic import TemplateView
 from blog.models import Article, User
 from blog.forms import SignInUserForm, LogInUserForm, ArticleForm
-from django.views.generic import CreateView
+import time
 import hashlib
 
 
 def home(request):
-    articles = Article.all()
+    """Home Page: displaying the last articles"""
+    articles = Article.all().order('-created_on').fetch(10)
     return render(request, 'home.html', locals())
-
-
-def about(request):
-    return render(request, 'about.html', locals())
-
-
-def contact(request):
-    return render(request, 'contact.html', locals())
 
 
 def login(request):
@@ -31,7 +20,8 @@ def login(request):
         form = LogInUserForm(request.POST)
 
         if form.is_valid():
-            user = User.gql("WHERE username = :username", username=form.cleaned_data['username']).fetch(1)
+            user = User.gql("WHERE username = :username",
+                            username=form.cleaned_data['username']).fetch(1)
             request.session['user'] = user[0]
             messages.add_message(request, messages.INFO, u'You are signed in')
             return redirect('home')
@@ -60,9 +50,11 @@ def signin(request):
             m = hashlib.md5()
             m.update(form.cleaned_data['password'])
             # Create the user
-            user = User(username=form.cleaned_data['username'], password=m.hexdigest())
+            user = User(username=form.cleaned_data['username'],
+                        password=m.hexdigest())
             user.put()
-            messages.add_message(request, messages.INFO, u'You are signed in. Please Log in now.')
+            messages.add_message(request, messages.INFO,
+                                 u'You are signed in. Please Log in now.')
             return redirect('home')
 
     else:
@@ -72,6 +64,7 @@ def signin(request):
 
 
 def create_article(request):
+    """Enables Article creation"""
 
     if request.method == 'POST':
         form = ArticleForm(request.POST)
@@ -81,7 +74,11 @@ def create_article(request):
                               content=form.cleaned_data['content'],
                               author=request.session['user'].username)
             article.put()
-            messages.add_message(request, messages.INFO, u'Article %s created' % form.cleaned_data['title'])
+            messages.add_message(request,
+                                 messages.INFO,
+                                 u'Article %s created' %
+                                 form.cleaned_data['title'])
+            time.sleep(1)
 
             return redirect('home')
 
@@ -92,16 +89,22 @@ def create_article(request):
 
 
 def delete_article(request, id):
+    """Enables Article deletion"""
+
     article = Article.get_by_id(int(id))
     if article:
-        messages.add_message(request, messages.INFO, u'Article %s deleted' % article.title)
+        messages.add_message(request,
+                             messages.INFO,
+                             u'Article %s deleted' % article.title)
         article.delete()
+        time.sleep(1)
     else:
         messages.add_message(request, messages.ERROR, u'Article not found')
     return redirect('home')
 
 
 def update_article(request, id):
+    """Enables Article update"""
 
     article = Article.get_by_id(int(id))
 
@@ -113,15 +116,23 @@ def update_article(request, id):
                 article.title = form.cleaned_data['title']
                 article.content = form.cleaned_data['content']
                 article.put()
-                messages.add_message(request, messages.INFO, u'Article %s created' % form.cleaned_data['title'])
+                messages.add_message(request,
+                                     messages.INFO,
+                                     u'Article %s created'
+                                     % form.cleaned_data['title'])
+
+                time.sleep(1)
 
                 return redirect('home')
 
         else:
 
-            form = ArticleForm({ 'title': article.title, 'content': article.content })
+            form = ArticleForm({'title': article.title,
+                                'content': article.content})
 
         return render(request, 'article/create.html', locals())
     else:
-        messages.add_message(request, messages.ERROR, u'Article not found')
+        messages.add_message(request,
+                             messages.ERROR,
+                             u'Article not found')
         return redirect('home')

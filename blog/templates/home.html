@@ -1,10 +1,33 @@
 {% extends "generic.html" %}
+{% load extra %}
 {% block content %}
-<div class="well well-large">
     {% for article in articles %}
-    {{ article.title }}
-    {{ article.content }}
+    <div class="well">
+        {% if request.session.user %}
+        <div class="btn-group pull-right">
+            <button class="btn">Action</button>
+            <button class="btn dropdown-toggle" data-toggle="dropdown">
+                <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu">
+                <!-- dropdown menu links -->
+                <li><a tabindex="-1" href="{% url article_update id=article|get_id %}">Update</a></li>
+                <li><a tabindex="-1" href="{% url article_delete id=article|get_id %}">Delete</a></li>
+                <li class="divider"></li>
+                <li><a tabindex="-1" href="{% url article_create %}">Create</a></li>
+            </ul>
+        </div>
+        {% endif %}
+        <h2>{{ article.title|capfirst }}</h2>
+    <p> 
+        <img src="{{STATIC_URL}}img/twitter.png"
+        style="float:left;margin-right:10px;">
+        {{ article.content }}
+    </p>
+    <p class="pull-right">
+    by <b>{{ article.author|capfirst }}</b> - {{ article.created_on }}
+    </p>
+    <span class="clearfix"></span>
+    </div>
     {% endfor %}
-    Home
-</div>
 {% endblock %}

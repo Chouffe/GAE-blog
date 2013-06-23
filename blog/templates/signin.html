@@ -3,11 +3,12 @@
 signin
 {% endblock %}
 {% block content %}
-<div class="hero-unit">
-<form method="post">{% csrf_token %}
-{{ form.as_p }}
-<input class="btn" type="submit" value="Submit" />
-</form>
+<div class="well">
+    <h2>Signin Form</h2>
+    <form method="post">{% csrf_token %}
+        {{ form.as_p }}
+        <input class="btn" type="submit" value="Submit" />
+    </form>
 </div>
 {% endblock %}
 

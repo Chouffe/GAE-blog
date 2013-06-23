@@ -1,6 +1,5 @@
 from google.appengine.ext import db
-from django.db import models
-import hashlib
+
 
 class User(db.Model):
 
@@ -8,7 +7,7 @@ class User(db.Model):
     password = db.StringProperty()
 
     def __unicode__(self):
-        return username
+        return self.username
 
 
 class Article(db.Model):
@@ -19,7 +18,7 @@ class Article(db.Model):
     author = db.StringProperty(User)
 
     def __str__(self):
-        return '%s' %self.title
+        return '%s' % self.title
 
     def __unicode__(self):
-        return title
+        return self.title
